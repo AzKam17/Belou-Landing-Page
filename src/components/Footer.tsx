@@ -105,7 +105,7 @@ function Footer() {
       <div className="bg-[#FE4000] text-white py-4">
         <div className="container flex flex-col md:flex-row justify-between items-center text-sm">
           <p>© {new Date().getFullYear()} Belou. Tous droits réservés.</p>
-          <p className="text-[#F4EAE1]">Made with ❤️ in Côte d'Ivoire</p>
+          <p className="text-[#F4EAE1]">Made with ❤️ in Côte d&apos;Ivoire</p>
         </div>
       </div>
     </footer>

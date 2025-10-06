@@ -1,8 +1,5 @@
-import Image from 'next/image'
-import logo from '@/assets/images/logo.png'
 import '@/assets/scss/style.scss'
 import AppProviders from '../components/wrappers/AppProviders'
-import { Metadata } from 'next'
 
 const splashScreenStyles = `
 #splash-screen {
