@@ -1,7 +1,7 @@
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import Image from 'next/image'
 import React from 'react'
-import iphone from "@/assets/images/feature-iphone.png";
+import img2 from "@/assets/images/img2.png";
 
 const About = () => {
   return (
@@ -18,9 +18,9 @@ const About = () => {
           Commence en quelques minutes&nbsp;: installe l’app, ajoute tes produits, et vends sans stress
         </h2>
         <p className="text-base font-normal text-muted mt-6">
-          Belou simplifie tout pour toi.  
-          En quelques clics, tu crées ta boutique, tu reçois tes commandes directement sur ton téléphone  
-          et tu restes concentré sur ce que tu fais le mieux&nbsp;: vendre et créer du contenu.  
+          Belou simplifie tout pour toi.
+          En quelques clics, tu crées ta boutique, tu reçois tes commandes directement sur ton téléphone
+          et tu restes concentré sur ce que tu fais le mieux&nbsp;: vendre et créer du contenu.
           Fini les tableaux compliqués, les messages oubliés et les pertes de temps.
         </p>
 
@@ -74,11 +74,11 @@ const About = () => {
 
       <div className="flex items-center">
         <Image
-          src={iphone}
+          src={img2}
           className="h-[600px] rounded-xl mx-auto"
           alt="Application Belou sur smartphone"
-          width={538}
-          height={600}
+          width={350}
+          height={130}
         />
       </div>
     </div>

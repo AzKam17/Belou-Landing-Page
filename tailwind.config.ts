@@ -4,7 +4,7 @@ export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}", 
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     'node_modules/preline/dist/*.js',
 
@@ -30,8 +30,8 @@ export default {
 
     extend: {
       colors: {
-        primary: "#5d87ff",
-        primaryDark: "#2a5ceb",
+        primary: "#FE4000",
+        primaryDark: "#FE4000",
         secondary: "#191A15",
         dark: "#212121",
         light: "#747474",
