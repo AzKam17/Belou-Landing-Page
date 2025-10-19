@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import '@/assets/scss/style.scss'
 import AppProviders from '../components/wrappers/AppProviders'
@@ -55,7 +56,11 @@ export default function RootLayout({
           />
         </div> */}
         <div id="__next_splash">
-          <AppProviders>{children}</AppProviders>
+          <AppProviders>
+              <Suspense fallback={<div>Chargement...</div>}>
+                {children}
+              </Suspense>
+          </AppProviders>
         </div>
       </body>
       <GoogleAnalytics gaId="GTM-5T758N4B" />
