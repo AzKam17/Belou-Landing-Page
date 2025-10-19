@@ -1,32 +1,64 @@
 'use client';
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import payment from '@/assets/images/payment.png'
 import logo from '@/assets/images/logo.png'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const Hero = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
   const [phone, setPhone] = useState('')
+  const [promo, setPromo] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const promoCode = searchParams.get('p')
+    if (promoCode) {
+      setPromo(promoCode.trim())
+      console.log('Promo code detected:', promoCode)
+    }
+  }, [searchParams])
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // remove all non-digit characters
     let value = e.target.value.replace(/\D/g, '')
-
-    // limit to 10 digits (for format XX XX XX XX XX)
     value = value.slice(0, 10)
-
-    // add spacing every 2 digits
     const formatted = value.replace(/(\d{2})(?=\d)/g, '$1 ')
-
     setPhone(formatted)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: replace with your actual saving logic (API call, Firebase, etc.)
-    alert(`Numéro enregistré : ${phone}`)
-    setPhone('')
+    setLoading(true)
+
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_SERVER
+      const response = await fetch(`${backendUrl}/api/v1/waitlist_root/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invited_by: promo || 'EAWL',
+          phone_number: phone.replace(/\s/g, ''),
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to register')
+
+      const data = await response.json()
+
+      console.log('✅ Registration success:', data)
+
+      // Redirect to success page with promo code
+      router.push(`/success?promo=${encodeURIComponent(data.promo || promo || '')}`)
+    } catch (error) {
+      console.error('❌ Registration failed:', error)
+      alert('Une erreur est survenue. Veuillez réessayer.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -56,15 +88,15 @@ const Hero = () => {
               </h1>
 
               <p className="text-base text-muted font-medium max-w-lg mt-6">
-                Belou est une application qui te permet de créer un site web pour ton business,
-                gérer tes produits, tes clients et tes commandes en toute simplicité.
+                Belou te permet de créer un site web pour ton business, de gérer tes produits,
+                tes clients et tes commandes facilement, depuis ton téléphone.
               </p>
 
               <p className="text-base text-gray-700 font-semibold mt-6">
-                🚀 Rejoins dès maintenant la liste d’attente pour être parmi les premiers à essayer Belou !
+                🎉 Crée dès maintenant ton compte Belou et commence à développer ton business en ligne !
               </p>
 
-              {/* Waitlist input */}
+              {/* Registration form */}
               <form
                   onSubmit={handleSubmit}
                   className="mt-10 flex flex-col sm:flex-row items-center gap-4"
@@ -79,9 +111,16 @@ const Hero = () => {
                 />
                 <button
                     type="submit"
-                    className="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition"
+                    disabled={loading}
+                    className={`px-6 py-3 bg-black text-white rounded-xl font-semibold transition flex items-center justify-center ${
+                        loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-gray-800'
+                    }`}
                 >
-                  Rejoindre la liste d’attente
+                  {loading ? (
+                      <span className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  ) : (
+                      'Créer mon compte 🚀'
+                  )}
                 </button>
               </form>
             </div>
@@ -90,7 +129,7 @@ const Hero = () => {
             <div className="relative flex justify-center items-center">
               <Image
                   src={payment}
-                  alt="App preview"
+                  alt="Aperçu de l’application Belou"
                   width={800}
                   height={600}
                   className="object-contain rounded-xl drop-shadow-lg"
